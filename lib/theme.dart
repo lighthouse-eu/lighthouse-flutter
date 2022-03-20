@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
-  //primaryColor: const Color(0xFFF8A435),
+  primaryColor: const Color(0xFFF8A435),
   primarySwatch: createMaterialColor(const Color(0xFFF8A435)),
   inputDecorationTheme: const InputDecorationTheme(
     filled: true,
@@ -12,6 +12,7 @@ final lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      elevation: 0,
       onPrimary: Colors.white,
       padding: const EdgeInsets.symmetric(horizontal: 32),
       minimumSize: const Size(131, 52),

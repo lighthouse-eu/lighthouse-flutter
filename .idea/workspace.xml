@@ -4,15 +4,16 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12fcbe85-4fea-4fcd-8b7a-3273dedd2a73" name="Default Changelist" comment="create starter template">
-      <change afterPath="$PROJECT_DIR$/lib/firebase_options.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/theme.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+    <list default="true" id="12fcbe85-4fea-4fcd-8b7a-3273dedd2a73" name="Default Changelist" comment="added signup, signup success and signin">
+      <change afterPath="$PROJECT_DIR$/lib/components/missing_person_tile.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/new_post.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/tabs/profile.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/tabs/reported.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/tabs/spotted.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/screens/tabs/tips.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/theme.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +83,14 @@
       <option name="presentableId" value="Default" />
       <updated>1647374339082</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added signup, signup success and signin">
+      <created>1647784989693</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1647784989693</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -105,6 +113,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create starter template" />
-    <option name="LAST_COMMIT_MESSAGE" value="create starter template" />
+    <MESSAGE value="added signup, signup success and signin" />
+    <option name="LAST_COMMIT_MESSAGE" value="added signup, signup success and signin" />
   </component>
 </project>
