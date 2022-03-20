@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
@@ -40,6 +37,16 @@ class DefaultFirebaseOptions {
     );
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCw9D5VwRdcu4LSlg-OpnMc09ieTj1DkVs',
+    appId: '1:882142075714:web:e9f7a6d64ea6e18e8b86db',
+    messagingSenderId: '882142075714',
+    projectId: 'lighthouse-app-dev',
+    authDomain: 'lighthouse-app-dev.firebaseapp.com',
+    storageBucket: 'lighthouse-app-dev.appspot.com',
+    measurementId: 'G-VRQ6K94XQL',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDZUlbnKsJihZ1S2NRB-LbwMVuk5r3M9ZM',
     appId: '1:882142075714:android:e1e4bdf2c829d7fe8b86db',
@@ -50,12 +57,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDmySyI9qsliieF5NstoVmGQzVvCOsRV-8',
-    appId: '1:882142075714:ios:0296f09e0943c9288b86db',
+    appId: '1:882142075714:ios:cc47e6619029bb7a8b86db',
     messagingSenderId: '882142075714',
     projectId: 'lighthouse-app-dev',
     storageBucket: 'lighthouse-app-dev.appspot.com',
     androidClientId: '882142075714-92baom2avf48kiq6rf8bb3u6for2dhod.apps.googleusercontent.com',
-    iosClientId: '882142075714-ma6a2d5lncf5via0ltfe3ck1fnqnn4ue.apps.googleusercontent.com',
-    iosBundleId: 'com.lighthouse.lighthouse',
+    iosClientId: '882142075714-h2docoegg2758tpv13ada1asdr3svd8k.apps.googleusercontent.com',
+    iosBundleId: 'com.lighthouse',
   );
 }
