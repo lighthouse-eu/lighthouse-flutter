@@ -36,6 +36,9 @@ class MyApp extends StatelessWidget {
         var page;
         print('onGenerateRoute with: ${settings.name}');
         switch (settings.name) {
+          case '/h':
+            page = const HomeScreen();
+            break;
           case '/signin':
             page = SignInScreen();
             break;
@@ -55,7 +58,7 @@ class MyApp extends StatelessWidget {
         initialData: FirebaseAuth.instance.currentUser,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const HomeScreen();
+            return SignInScreen();
           }
           return const HomeScreen();
         },
@@ -101,11 +104,11 @@ class _HomeScreenState extends State<HomeScreen>
           _tabController.animateTo(newIndex);
         }),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.visibility_outlined), label: 'Spotted'),
+          BottomNavigationBarItem(icon: Icon(Icons.search_outlined), label: 'Missing'),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
+          BottomNavigationBarItem(icon: Icon(Icons.help_center_outlined), label: 'Help'),
+          BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
         ],
         backgroundColor: const Color.fromARGB(255, 235, 235, 235),
         selectedItemColor: const Color(0xFFF8A435),

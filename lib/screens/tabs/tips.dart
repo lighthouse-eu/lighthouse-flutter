@@ -5,17 +5,20 @@ class TipsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      children: const [
-        Text(
-          'Useful help and resources',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
-        ),
-        TipCard(),
-        TipCard(),
-        TipCard(),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        children: const [
+          Text(
+            'Useful help and resources',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+          ),
+          TipCard(),
+          TipCard(),
+          TipCard(),
+        ],
+      ),
     );
   }
 }

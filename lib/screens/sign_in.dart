@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lighthouse/services/navigation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -10,8 +11,7 @@ class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
 
   void login() {
-    print(form.value);
-    print(form.control('password').value);
+    Navigation.state.pushReplacementNamed('/h');
   }
 
   @override
