@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         var page;
         print('onGenerateRoute with: ${settings.name}');
         switch (settings.name) {
-          case '/h':
+          case '/home':
             page = const HomeScreen();
             break;
           case '/signin':

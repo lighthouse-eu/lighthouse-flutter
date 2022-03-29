@@ -1,19 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:place_picker/place_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class NewPost extends StatelessWidget {
   final form = FormGroup(
     {
-      'name': FormControl<String>(),
-      'gender': FormControl<String>(),
-      'age': FormControl<String>(),
-      'skinColor': FormControl<String>(),
-      'hairColor': FormControl<String>(),
-      'location': FormControl<String>(),
-      'time': FormControl<String>(),
-      'description': FormControl<String>(),
-      'terms': FormControl<bool>(),
-      'acknowledge': FormControl<bool>(),
+      'picture': FormControl<XFile>(),
+      'name': FormControl<String>(validators: [Validators.required]),
+      'gender': FormControl<String>(validators: [Validators.required]),
+      'age': FormControl<String>(
+          validators: [Validators.required, Validators.number]),
+      'skinColor': FormControl<String>(validators: [Validators.required]),
+      'hairColor': FormControl<String>(validators: [Validators.required]),
+      'location': FormControl<LocationResult>(),
+      'time': FormControl<TimeOfDay>(),
+      'date': FormControl<DateTime>(),
+      'description': FormControl<String>(validators: [Validators.required]),
+      'terms': FormControl<bool>(validators: [Validators.requiredTrue]),
+      'acknowledge': FormControl<bool>(validators: [Validators.requiredTrue]),
     },
   );
 
@@ -21,6 +28,22 @@ class NewPost extends StatelessWidget {
 
   void signup() {
     print(form.value);
+  }
+
+  void showPlacePicker(BuildContext context) async {
+    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => PlacePicker(
+              "AIzaSyDZUlbnKsJihZ1S2NRB-LbwMVuk5r3M9ZM",
+            )));
+    form.control('location').updateValue(result);
+  }
+
+  void pickImage() async {
+    final _picker = ImagePicker();
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      form.control('picture').updateValue(image);
+    }
   }
 
   @override
@@ -36,13 +59,26 @@ class NewPost extends StatelessWidget {
               child: Center(
                 child: ListView(
                   children: [
-                    const Center(
-                      child: CircleAvatar(
-                        child: Icon(Icons.add_a_photo),
-                        radius: 50,
+                    ReactiveValueListenableBuilder(
+                      formControlName: 'picture',
+                      builder: (context, control, child) => GestureDetector(
+                        onTap: pickImage,
+                        child: Center(
+                          child: CircleAvatar(
+                            child: control.value == null
+                                ? const Icon(Icons.add_a_photo_outlined)
+                                : null,
+                            backgroundImage: control.value != null
+                                ? FileImage(File((control.value as XFile).path))
+                                : null,
+                            radius: 50,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     ReactiveTextField(
                       formControlName: 'name',
                       decoration: const InputDecoration(hintText: 'Name'),
@@ -67,6 +103,7 @@ class NewPost extends StatelessWidget {
                           child: ReactiveTextField(
                             formControlName: 'age',
                             decoration: const InputDecoration(hintText: 'Age'),
+                            keyboardType: TextInputType.number,
                           ),
                         ),
                       ],
@@ -99,16 +136,44 @@ class NewPost extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    ReactiveTextField(
-                      formControlName: 'location',
-                      decoration: const InputDecoration(hintText: 'Location'),
+                    GestureDetector(
+                      onTap: () => showPlacePicker(context),
+                      child: ReactiveValueListenableBuilder(
+                        formControlName: 'location',
+                        builder: (context, control, child) => IconTextContainer(
+                            text: (control.value as LocationResult?)
+                                    ?.formattedAddress ??
+                                'Location',
+                            icon: Icons.pin_drop_outlined),
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    ReactiveTextField(
+                    ReactiveTimePicker(
                       formControlName: 'time',
-                      decoration: const InputDecoration(hintText: 'Time'),
+                      builder: (context, picker, child) => GestureDetector(
+                        onTap: picker.showPicker,
+                        child: IconTextContainer(
+                          text: picker.value?.toString() ?? 'Time',
+                          icon: Icons.schedule_outlined,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ReactiveDatePicker(
+                      formControlName: 'date',
+                      builder: (context, picker, child) => GestureDetector(
+                        onTap: picker.showPicker,
+                        child: IconTextContainer(
+                          text: picker.value?.toString() ?? 'Date',
+                          icon: Icons.calendar_month_outlined,
+                        ),
+                      ),
+                      firstDate: DateTime(2010),
+                      lastDate: DateTime.now(),
                     ),
                     const SizedBox(
                       height: 20,
@@ -145,13 +210,48 @@ class NewPost extends StatelessWidget {
                         child: const Text('Submit'),
                       ),
                     ),
-                    const SizedBox(height: 10,),
+                    const SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class IconTextContainer extends StatelessWidget {
+  final String text;
+  final IconData icon;
+  const IconTextContainer({
+    Key? key,
+    required this.text,
+    required this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 235, 235, 235),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      height: 60,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Icon(icon),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(text),
+        ],
       ),
     );
   }

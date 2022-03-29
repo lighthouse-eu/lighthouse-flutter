@@ -1,21 +1,33 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lighthouse/services/navigation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class SignUpScreen extends StatelessWidget {
   final form = FormGroup(
     {
-      'email': FormControl<String>(validators: [Validators.email]),
-      'password': FormControl<String>(),
-      'confirmPassword': FormControl<String>(),
+      'email': FormControl<String>(
+          validators: [Validators.email, Validators.required]),
+      'password': FormControl<String>(validators: [Validators.required]),
+      'confirmPassword': FormControl<String>(validators: [Validators.required]),
     },
     validators: [Validators.mustMatch('password', 'confirmPassword')],
   );
 
   SignUpScreen({Key? key}) : super(key: key);
 
-  void signup() {
-    print(form.value);
-    print(form.control('password').value);
+  void signup(BuildContext context) async {
+    if (form.valid) {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: form.control('email').value,
+            password: form.control('password').value);
+        Navigation.state.pushReplacementNamed('/signupSuccess');
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message!)));
+      }
+    }
   }
 
   @override
@@ -46,26 +58,30 @@ class SignUpScreen extends StatelessWidget {
                     ReactiveTextField(
                       formControlName: 'password',
                       decoration: const InputDecoration(hintText: 'Password'),
+                      obscureText: true,
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     ReactiveTextField(
                       formControlName: 'confirmPassword',
-                      decoration: const InputDecoration(hintText: 'Confirm Password'),
+                      decoration:
+                          const InputDecoration(hintText: 'Confirm Password'),
+                      obscureText: true,
                     ),
                     const SizedBox(
                       height: 35,
                     ),
                     ElevatedButton(
-                      onPressed: signup,
-                      child: const Text('Login'),
+                      onPressed: () => signup(context),
+                      child: const Text('Sign up'),
                     ),
                     const Spacer(
                       flex: 3,
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.of(context).pushReplacementNamed('/signin'),
+                      onTap: () =>
+                          Navigator.of(context).pushReplacementNamed('/signin'),
                       child: Text(
                         'Login instead',
                         style: TextStyle(

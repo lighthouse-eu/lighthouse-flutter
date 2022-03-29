@@ -1,17 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lighthouse/services/navigation.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class SignInScreen extends StatelessWidget {
   final form = FormGroup({
-    'email': FormControl<String>(),
-    'password': FormControl<String>(),
+    'email': FormControl<String>(
+        validators: [Validators.email, Validators.required]),
+    'password': FormControl<String>(validators: [Validators.required]),
   });
 
   SignInScreen({Key? key}) : super(key: key);
 
-  void login() {
-    Navigation.state.pushReplacementNamed('/h');
+  void login(BuildContext context) async {
+    if (form.valid) {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: form.control('email').value,
+            password: form.control('password').value);
+        Navigation.state.pushReplacementNamed('/home');
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message!)));
+      }
+    }
   }
 
   @override
@@ -35,6 +47,7 @@ class SignInScreen extends StatelessWidget {
                     ReactiveTextField(
                       formControlName: 'email',
                       decoration: const InputDecoration(hintText: 'Email'),
+                      showErrors: (control) => false,
                     ),
                     const SizedBox(
                       height: 20,
@@ -42,12 +55,14 @@ class SignInScreen extends StatelessWidget {
                     ReactiveTextField(
                       formControlName: 'password',
                       decoration: const InputDecoration(hintText: 'Password'),
+                      obscureText: true,
+                      showErrors: (control) => false,
                     ),
                     const SizedBox(
                       height: 35,
                     ),
                     ElevatedButton(
-                      onPressed: login,
+                      onPressed: () => login(context),
                       child: const Text('Login'),
                     ),
                     const Spacer(
@@ -58,7 +73,8 @@ class SignInScreen extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.of(context).pushReplacementNamed('/signup'),
+                      onTap: () =>
+                          Navigator.of(context).pushReplacementNamed('/signup'),
                       child: Text(
                         'Sign up',
                         style: TextStyle(
