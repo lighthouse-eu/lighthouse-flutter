@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -12,19 +13,23 @@ class ProfileTab extends StatelessWidget {
             radius: 50,
           ),
         ),
-        const SizedBox(height: 10,),
-        const Center(
+        const SizedBox(
+          height: 10,
+        ),
+        Center(
           child: Text(
-            'John Adam',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            FirebaseAuth.instance.currentUser!.email!,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
         ),
-        const Center(
+        Center(
           child: Text(
-            'Bremen, Germany',
+            FirebaseAuth.instance.currentUser!.uid,
           ),
         ),
-        const SizedBox(height: 30,),
+        const SizedBox(
+          height: 30,
+        ),
         const ListTile(
           title: Text('My Active Posts'),
         ),
@@ -46,7 +51,9 @@ class ProfileTab extends StatelessWidget {
         const ListTile(
           title: Text('Helpful NGOs and Charities'),
         ),
-        const SizedBox(height: 40,),
+        const SizedBox(
+          height: 40,
+        ),
         Center(
           child: ElevatedButton(
             onPressed: () => print('asd'),
@@ -55,9 +62,7 @@ class ProfileTab extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             style: ElevatedButton.styleFrom(
-                primary: Colors.grey.shade200,
-                onPrimary: Colors.red
-            ),
+                primary: Colors.grey.shade200, onPrimary: Colors.red),
           ),
         ),
       ],
