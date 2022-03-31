@@ -20,7 +20,7 @@ class MissingPersonTile extends StatelessWidget {
           height: 10,
         ),
         Text(
-          '${post.name}, ${post.gender}, ${post.age}, ${post.height}',
+          '${post.name}, ${post.gender}, ${post.age}',
           style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w500,
@@ -30,6 +30,17 @@ class MissingPersonTile extends StatelessWidget {
           'Went missing ${DateTime.now().difference(post.timePosted).inDays}d ago near ${post.address}',
           style: const TextStyle(
             fontSize: 14,
+          ),
+        ),
+        const SizedBox(
+          height: 7,
+        ),
+        Text(
+          'Posted on ${post.timePosted.day}.${post.timePosted.month}.${post.timePosted.year}, ${post.timePosted.hour}:${post.timePosted.minute}',
+          style: const TextStyle(
+            fontSize: 12,
+            fontStyle: FontStyle.italic,
+            color: Colors.grey,
           ),
         ),
         const SizedBox(

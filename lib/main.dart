@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
+        padding: const EdgeInsets.only(top: 60, left: 10, right: 10),
         child: TabBarView(
           controller: _tabController,
           physics: const NeverScrollableScrollPhysics(),
