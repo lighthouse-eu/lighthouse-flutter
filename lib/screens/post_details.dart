@@ -33,6 +33,10 @@ class PostDetails extends StatelessWidget {
             height: 30,
           ),
           ListTile(
+            title: const Text('Address'),
+            subtitle: Text(post.address),
+          ),
+          ListTile(
             title: const Text('Location'),
             subtitle: Text('${post.latitude}, ${post.longitude}'),
           ),

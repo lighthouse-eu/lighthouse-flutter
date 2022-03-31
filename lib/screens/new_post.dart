@@ -172,9 +172,10 @@ class _NewPostState extends State<NewPost> {
                       children: [
                         Expanded(
                           child: ReactiveTextField(
-                            formControlName: 'gender',
+                            formControlName: 'height',
                             decoration:
-                                const InputDecoration(hintText: 'Gender'),
+                                const InputDecoration(hintText: 'Height'),
+                            keyboardType: TextInputType.number,
                           ),
                         ),
                         const SizedBox(
@@ -217,10 +218,15 @@ class _NewPostState extends State<NewPost> {
                     const SizedBox(
                       height: 20,
                     ),
-                    ReactiveTextField(
-                      formControlName: 'height',
-                      decoration: const InputDecoration(hintText: 'Height'),
-                      keyboardType: TextInputType.number,
+                    ReactiveDropdownField<String>(
+                      hint: const Text('Gender'),
+                      formControlName: 'gender',
+                      items: ['Male', 'Female']
+                          .map((e) => DropdownMenuItem<String>(
+                                child: Text(e),
+                                value: e,
+                              ))
+                          .toList(),
                     ),
                     const SizedBox(
                       height: 20,

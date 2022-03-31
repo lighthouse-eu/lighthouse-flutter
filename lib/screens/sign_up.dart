@@ -33,6 +33,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (context, constraints) => SizedBox(
           width: constraints.maxWidth < 500 ? null : 500,
@@ -46,8 +47,9 @@ class SignUpScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(
-                      flex: 2,
+                      flex: 1,
                     ),
+                    Image.asset('assets/logo_big_black.png', fit: BoxFit.fitWidth,),
                     ReactiveTextField(
                       formControlName: 'email',
                       decoration: const InputDecoration(hintText: 'Email'),
