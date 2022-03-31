@@ -33,8 +33,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       navigatorKey: Navigation.key,
       onGenerateRoute: (settings) {
-        var page;
-        print('onGenerateRoute with: ${settings.name}');
+        late Widget page;
         switch (settings.name) {
           case '/home':
             page = const HomeScreen();
@@ -87,15 +86,19 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          ReportedTab(),
-          SpottedTab(),
-          NewPost(),
-          const TipsTab(),
-          const ProfileTab(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 40, left: 10, right: 10),
+        child: TabBarView(
+          controller: _tabController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            SpottedTab(),
+            ReportedTab(),
+            const NewPost(),
+            const TipsTab(),
+            const ProfileTab(),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _tabController.index,
@@ -107,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen>
           BottomNavigationBarItem(
               icon: Icon(Icons.visibility_outlined), label: 'Spotted'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search_outlined), label: 'Missing'),
+              icon: Icon(Icons.search_outlined), label: 'Reported'),
           BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
           BottomNavigationBarItem(
               icon: Icon(Icons.help_center_outlined), label: 'Help'),

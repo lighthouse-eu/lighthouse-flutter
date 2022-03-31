@@ -56,7 +56,10 @@ class ProfileTab extends StatelessWidget {
         ),
         Center(
           child: ElevatedButton(
-            onPressed: () => print('asd'),
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushReplacementNamed('/signin');
+            },
             child: const Text(
               'Sign out',
               style: TextStyle(fontWeight: FontWeight.w600),

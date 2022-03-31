@@ -32,7 +32,6 @@ class CreateProfile extends StatelessWidget {
   }
 
   void createProfile() {
-    print(form.value);
     Navigation.state.pushReplacementNamed('/signupSuccess');
     // if (form.valid && validatePhone(form.control('phone').value)) {
     //   print('form valid');

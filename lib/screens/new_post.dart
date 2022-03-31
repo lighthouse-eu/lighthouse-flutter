@@ -11,7 +11,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:uuid/uuid.dart';
 
 class NewPost extends StatefulWidget {
-  NewPost({Key? key}) : super(key: key);
+  const NewPost({Key? key}) : super(key: key);
 
   @override
   State<NewPost> createState() => _NewPostState();
@@ -40,7 +40,6 @@ class _NewPostState extends State<NewPost> {
   );
 
   Future<void> addMissingPost(BuildContext context) async {
-    print(form.value);
     if (form.invalid) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Form is invalid or incomplete')));
@@ -110,7 +109,7 @@ class _NewPostState extends State<NewPost> {
         var file = File(image.path);
         form.control('picture').updateValue(file);
       }
-    } on Exception catch (e) {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Something went wrong whiile getting your image.')));
     }
@@ -152,13 +151,13 @@ class _NewPostState extends State<NewPost> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Missing'),
+                        const Text('Missing'),
                         ReactiveSwitch(
                           formControlName: 'isSpotted',
                           inactiveTrackColor: Colors.blue.shade200,
                           inactiveThumbColor: Colors.blue,
                         ),
-                        Text('Spotted')
+                        const Text('Spotted')
                       ],
                     ),
                     ReactiveTextField(
