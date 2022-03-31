@@ -1,18 +1,33 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lighthouse/keys.dart';
+import 'package:lighthouse/services/post.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:uuid/uuid.dart';
 
-class NewPost extends StatelessWidget {
+class NewPost extends StatefulWidget {
+  NewPost({Key? key}) : super(key: key);
+
+  @override
+  State<NewPost> createState() => _NewPostState();
+}
+
+class _NewPostState extends State<NewPost> {
   final form = FormGroup(
     {
-      'picture': FormControl<XFile>(),
+      'picture': FormControl<File>(validators: [Validators.required]),
+      'isSpotted':
+          FormControl<bool>(value: false, validators: [Validators.required]),
       'name': FormControl<String>(validators: [Validators.required]),
       'gender': FormControl<String>(validators: [Validators.required]),
       'age': FormControl<String>(
           validators: [Validators.required, Validators.number]),
+      'height': FormControl<String>(validators: [Validators.required]),
       'skinColor': FormControl<String>(validators: [Validators.required]),
       'hairColor': FormControl<String>(validators: [Validators.required]),
       'location': FormControl<LocationResult>(),
@@ -24,25 +39,80 @@ class NewPost extends StatelessWidget {
     },
   );
 
-  NewPost({Key? key}) : super(key: key);
-
-  void signup() {
+  Future<void> addMissingPost(BuildContext context) async {
     print(form.value);
+    if (form.invalid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Form is invalid or incomplete')));
+      return;
+    }
+
+    var id = const Uuid().v1();
+    var postType = form.control('isSpotted').value ? 'spotted' : 'reported';
+    var pictureType =
+        (form.control('picture').value as File).path.split('.').last;
+    var pictureRef = FirebaseStorage.instance.ref('$postType/$id.$pictureType');
+    late String pictureUrl;
+
+    try {
+      await pictureRef.putFile(form.control('picture').value);
+      pictureUrl = await pictureRef.getDownloadURL();
+    } on FirebaseException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message!)));
+    }
+
+    DateTime date = form.control('date').value;
+    TimeOfDay time = form.control('time').value;
+
+    var newPost = MissingPost(
+      name: form.control('name').value,
+      pictureUrl: pictureUrl,
+      gender: form.control('gender').value,
+      age: int.parse(form.control('age').value),
+      height: double.parse(form.control('height').value),
+      description: form.control('description').value,
+      latitude:
+          (form.control('location').value as LocationResult).latLng!.latitude,
+      longitude:
+          (form.control('location').value as LocationResult).latLng!.longitude,
+      address:
+          (form.control('location').value as LocationResult).formattedAddress!,
+      timePosted: DateTime.now(),
+      lastSeen:
+          DateTime(date.year, date.month, date.day, time.hour, time.minute),
+      contactDetails: FirebaseAuth.instance.currentUser!.email!,
+      skinColor: form.control('skinColor').value,
+      hairColor: form.control('hairColor').value,
+    );
+
+    await PostService()
+        .addMissingPost(newPost, form.control('isSpotted').value);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Post created!')));
   }
 
   void showPlacePicker(BuildContext context) async {
-    LocationResult result = await Navigator.of(context).push(MaterialPageRoute(
+    LocationResult? result = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => PlacePicker(
-              "AIzaSyDZUlbnKsJihZ1S2NRB-LbwMVuk5r3M9ZM",
+              Platform.isAndroid ? androidMapsKey : iosMapsKey,
             )));
-    form.control('location').updateValue(result);
+    if (result != null) {
+      form.control('location').updateValue(result);
+    }
   }
 
   void pickImage() async {
     final _picker = ImagePicker();
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      form.control('picture').updateValue(image);
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var file = File(image.path);
+        form.control('picture').updateValue(file);
+      }
+    } on Exception catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Something went wrong whiile getting your image.')));
     }
   }
 
@@ -69,7 +139,7 @@ class NewPost extends StatelessWidget {
                                 ? const Icon(Icons.add_a_photo_outlined)
                                 : null,
                             backgroundImage: control.value != null
-                                ? FileImage(File((control.value as XFile).path))
+                                ? FileImage(control.value as File)
                                 : null,
                             radius: 50,
                           ),
@@ -78,6 +148,18 @@ class NewPost extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Missing'),
+                        ReactiveSwitch(
+                          formControlName: 'isSpotted',
+                          inactiveTrackColor: Colors.blue.shade200,
+                          inactiveThumbColor: Colors.blue,
+                        ),
+                        Text('Spotted')
+                      ],
                     ),
                     ReactiveTextField(
                       formControlName: 'name',
@@ -136,6 +218,14 @@ class NewPost extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
+                    ReactiveTextField(
+                      formControlName: 'height',
+                      decoration: const InputDecoration(hintText: 'Height'),
+                      keyboardType: TextInputType.number,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     GestureDetector(
                       onTap: () => showPlacePicker(context),
                       child: ReactiveValueListenableBuilder(
@@ -155,7 +245,9 @@ class NewPost extends StatelessWidget {
                       builder: (context, picker, child) => GestureDetector(
                         onTap: picker.showPicker,
                         child: IconTextContainer(
-                          text: picker.value?.toString() ?? 'Time',
+                          text: picker.value != null
+                              ? '${picker.value!.hour}:${picker.value!.minute}'
+                              : 'Time',
                           icon: Icons.schedule_outlined,
                         ),
                       ),
@@ -168,7 +260,9 @@ class NewPost extends StatelessWidget {
                       builder: (context, picker, child) => GestureDetector(
                         onTap: picker.showPicker,
                         child: IconTextContainer(
-                          text: picker.value?.toString() ?? 'Date',
+                          text: picker.value != null
+                              ? '${picker.value!.day}.${picker.value!.month}.${picker.value!.year}'
+                              : 'Date',
                           icon: Icons.calendar_month_outlined,
                         ),
                       ),
@@ -206,7 +300,7 @@ class NewPost extends StatelessWidget {
                     ),
                     Center(
                       child: ElevatedButton(
-                        onPressed: signup,
+                        onPressed: () => addMissingPost(context),
                         child: const Text('Submit'),
                       ),
                     ),
@@ -243,14 +337,19 @@ class IconTextContainer extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12),
       height: 60,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        //mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Icon(icon),
           const SizedBox(
             width: 10,
           ),
-          Text(text),
+          Expanded(
+            child: Text(
+              text,
+              overflow: TextOverflow.clip,
+            ),
+          ),
         ],
       ),
     );

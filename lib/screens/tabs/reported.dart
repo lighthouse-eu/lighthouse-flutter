@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:lighthouse/components/missing_person_tile.dart';
+import 'package:lighthouse/services/post.dart';
 
 class ReportedTab extends StatelessWidget {
-  const ReportedTab({Key? key}) : super(key: key);
+  final Future<List<MissingPost>> _getFuture =
+      PostService().getMissingPosts(false);
+  ReportedTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-      child: FutureBuilder(
+      child: FutureBuilder<List<MissingPost>>(
+        initialData: const [],
+        future: _getFuture,
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Something went wrong.'),
+            );
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -36,8 +51,10 @@ class ReportedTab extends StatelessWidget {
               ),
               Expanded(
                 child: ListView.separated(
-                  itemCount: 5,
-                  itemBuilder: (context, index) => const MissingPersonTile(),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) => MissingPersonTile(
+                    post: snapshot.data![index],
+                  ),
                   separatorBuilder: (context, index) => const SizedBox(
                     height: 30,
                   ),

@@ -2,37 +2,44 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
 class PostService {
-  final CollectionReference<MissingPost> missing = FirebaseFirestore.instance
-      .collection('missing')
+  final CollectionReference<MissingPost> reported = FirebaseFirestore.instance
+      .collection('reported')
       .withConverter<MissingPost>(
         fromFirestore: (doc, options) => MissingPost.fromJson(doc.data()!),
         toFirestore: (post, options) => post.toJson(),
       );
-  final CollectionReference<SpottedPost> spotted = FirebaseFirestore.instance
+  final CollectionReference<MissingPost> spotted = FirebaseFirestore.instance
       .collection('spotted')
-      .withConverter<SpottedPost>(
-        fromFirestore: (doc, options) => SpottedPost.fromJson(doc.data()!),
+      .withConverter<MissingPost>(
+        fromFirestore: (doc, options) => MissingPost.fromJson(doc.data()!),
         toFirestore: (post, options) => post.toJson(),
       );
 
-  Future<void> addMissingPost(MissingPost post) async {
-    missing.add(post);
+  Future<void> addMissingPost(MissingPost post, bool isSpotted) async {
+    if (isSpotted) {
+      spotted.add(post);
+    } else {
+      reported.add(post);
+    }
   }
 
-  Future<void> addSpottedPost(SpottedPost post) async {
-    spotted.add(post);
+  Future<List<MissingPost>> getMissingPosts(bool isSpotted) async {
+    var query = isSpotted ? await spotted.get() : await reported.get();
+    return query.docs.map((e) => e.data()).toList();
   }
 }
 
 class MissingPost {
   MissingPost({
     required this.name,
+    required this.pictureUrl,
     required this.gender,
     required this.age,
     required this.height,
     required this.description,
     required this.latitude,
     required this.longitude,
+    required this.address,
     required this.timePosted,
     required this.lastSeen,
     required this.contactDetails,
@@ -41,14 +48,16 @@ class MissingPost {
   });
 
   final String name;
+  final String pictureUrl;
   final String gender;
   final int age;
-  final int height;
+  final double height;
   final String description;
   final double latitude;
   final double longitude;
-  final int timePosted;
-  final int lastSeen;
+  final String address;
+  final DateTime timePosted;
+  final DateTime lastSeen;
   final String contactDetails;
   final String skinColor;
   final String hairColor;
@@ -60,14 +69,16 @@ class MissingPost {
 
   factory MissingPost.fromJson(Map<String, dynamic> json) => MissingPost(
         name: json["name"],
+        pictureUrl: json["pictureUrl"],
         gender: json["gender"],
         age: json["age"],
         height: json["height"],
         description: json["description"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
-        timePosted: json["time_posted"],
-        lastSeen: json["last_seen"],
+        address: json['address'],
+        timePosted: (json["time_posted"] as Timestamp).toDate(),
+        lastSeen: (json["last_seen"] as Timestamp).toDate(),
         contactDetails: json["contact_details"],
         skinColor: json["skin_color"],
         hairColor: json["hair_color"],
@@ -75,12 +86,14 @@ class MissingPost {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "pictureUrl": pictureUrl,
         "gender": gender,
         "age": age,
         "height": height,
         "description": description,
         "latitude": latitude,
         "longitude": longitude,
+        'address': address,
         "time_posted": timePosted,
         "last_seen": lastSeen,
         "contact_details": contactDetails,
@@ -92,6 +105,7 @@ class MissingPost {
 class SpottedPost {
   SpottedPost({
     required this.name,
+    required this.pictureUrl,
     required this.gender,
     required this.age,
     required this.height,
@@ -106,14 +120,15 @@ class SpottedPost {
   });
 
   final String name;
+  final String pictureUrl;
   final String gender;
   final int age;
-  final int height;
+  final double height;
   final String description;
   final double latitude;
   final double longitude;
-  final int timePosted;
-  final int lastSeen;
+  final DateTime timePosted;
+  final DateTime lastSeen;
   final String contactDetails;
   final String skinColor;
   final String hairColor;
@@ -125,14 +140,15 @@ class SpottedPost {
 
   factory SpottedPost.fromJson(Map<String, dynamic> json) => SpottedPost(
         name: json["name"],
+        pictureUrl: json["pictureUrl"],
         gender: json["gender"],
         age: json["age"],
         height: json["height"],
         description: json["description"],
         latitude: json["latitude"].toDouble(),
         longitude: json["longitude"].toDouble(),
-        timePosted: json["time_posted"],
-        lastSeen: json["last_seen"],
+        timePosted: (json["time_posted"] as Timestamp).toDate(),
+        lastSeen: (json["last_seen"] as Timestamp).toDate(),
         contactDetails: json["contact_details"],
         skinColor: json["skin_color"],
         hairColor: json["hair_color"],
@@ -140,14 +156,15 @@ class SpottedPost {
 
   Map<String, dynamic> toJson() => {
         "name": name,
+        "pictureUrl": pictureUrl,
         "gender": gender,
         "age": age,
         "height": height,
         "description": description,
         "latitude": latitude,
         "longitude": longitude,
-        "time_posted": timePosted,
-        "last_seen": lastSeen,
+        "time_posted": Timestamp.fromDate(timePosted),
+        "last_seen": Timestamp.fromDate(lastSeen),
         "contact_details": contactDetails,
         "skin_color": skinColor,
         "hair_color": hairColor,

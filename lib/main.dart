@@ -90,8 +90,8 @@ class _HomeScreenState extends State<HomeScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          const ReportedTab(),
-          const SpottedTab(),
+          ReportedTab(),
+          SpottedTab(),
           NewPost(),
           const TipsTab(),
           const ProfileTab(),
@@ -104,11 +104,15 @@ class _HomeScreenState extends State<HomeScreen>
           _tabController.animateTo(newIndex);
         }),
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.visibility_outlined), label: 'Spotted'),
-          BottomNavigationBarItem(icon: Icon(Icons.search_outlined), label: 'Missing'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.visibility_outlined), label: 'Spotted'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search_outlined), label: 'Missing'),
           BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
-          BottomNavigationBarItem(icon: Icon(Icons.help_center_outlined), label: 'Help'),
-          BottomNavigationBarItem(icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.help_center_outlined), label: 'Help'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle_outlined), label: 'Profile'),
         ],
         backgroundColor: const Color.fromARGB(255, 235, 235, 235),
         selectedItemColor: const Color(0xFFF8A435),
