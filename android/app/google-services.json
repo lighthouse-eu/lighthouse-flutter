@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "882142075714",
+    "project_id": "lighthouse-app-dev",
+    "storage_bucket": "lighthouse-app-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882142075714:android:e1e4bdf2c829d7fe8b86db",
+        "android_client_info": {
+          "package_name": "com.lighthouse.lighthouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882142075714-r6mg0tvkkrt67v09hs0q8j6kafqmmdqf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lighthouse.lighthouse",
+            "certificate_hash": "52bb7eb4f46b67b5d52ee5d44bcd5902712420f0"
+          }
+        },
+        {
+          "client_id": "882142075714-6hqhin6j7eicdua4m3apggaqnqu446b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRj_084LvU-kMlPzlcvM7kc_0BBJSa_RA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882142075714-6hqhin6j7eicdua4m3apggaqnqu446b8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "882142075714-h2docoegg2758tpv13ada1asdr3svd8k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lighthouse"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
