@@ -6,6 +6,7 @@ import 'package:lighthouse/screens/new_post.dart';
 import 'package:lighthouse/screens/sign_in.dart';
 import 'package:lighthouse/screens/sign_up.dart';
 import 'package:lighthouse/screens/sign_up_success.dart';
+import 'package:lighthouse/screens/tabs/missing_spotted_map.dart';
 import 'package:lighthouse/screens/tabs/profile.dart';
 import 'package:lighthouse/screens/tabs/reported.dart';
 import 'package:lighthouse/screens/tabs/spotted.dart';
@@ -17,8 +18,9 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.light));
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark));
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -84,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
   }
 
   @override
@@ -96,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen>
           controller: _tabController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
+            MissingSpottedMap(),
             SpottedTab(),
             ReportedTab(),
             const NewPost(),
@@ -111,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen>
           _tabController.animateTo(newIndex);
         }),
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
           BottomNavigationBarItem(
               icon: Icon(Icons.visibility_outlined), label: 'Spotted'),
           BottomNavigationBarItem(
