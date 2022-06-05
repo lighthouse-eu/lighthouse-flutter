@@ -63,12 +63,12 @@ class MissingPersonTile extends StatelessWidget {
                 builder: (context) => PostDetails(post: post),
                 fullscreenDialog: true,
               )),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.grey.shade200, onPrimary: Colors.black),
               child: const Text(
                 'See More',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.grey.shade200, onPrimary: Colors.black),
             ),
             ElevatedButton(
               onPressed: () => showDialog(

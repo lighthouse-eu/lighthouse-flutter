@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lighthouse/screens/new_post.dart';
 import 'package:lighthouse/screens/sign_in.dart';
 import 'package:lighthouse/screens/sign_up.dart';
@@ -18,9 +17,6 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark));
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -93,12 +89,12 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 60, left: 10, right: 10),
+        padding: const EdgeInsets.only(top: 30, left: 10, right: 10),
         child: TabBarView(
           controller: _tabController,
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            MissingSpottedMap(),
+            const MissingSpottedMap(),
             SpottedTab(),
             ReportedTab(),
             const NewPost(),

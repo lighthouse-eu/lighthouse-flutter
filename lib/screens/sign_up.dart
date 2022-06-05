@@ -49,7 +49,10 @@ class SignUpScreen extends StatelessWidget {
                     const Spacer(
                       flex: 1,
                     ),
-                    Image.asset('assets/logo_big_black.png', fit: BoxFit.fitWidth,),
+                    Image.asset(
+                      'assets/logo_big_black.png',
+                      fit: BoxFit.fitWidth,
+                    ),
                     ReactiveTextField(
                       formControlName: 'email',
                       decoration: const InputDecoration(hintText: 'Email'),

@@ -28,9 +28,10 @@ class ReportedTab extends StatelessWidget {
           children: [
             const Text(
               'Reported missing near you',
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 36,
+                fontSize: 26,
               ),
             ),
             const SizedBox(
@@ -48,8 +49,9 @@ class ReportedTab extends StatelessWidget {
                 itemBuilder: (context, index) => MissingPersonTile(
                   post: snapshot.data![index],
                 ),
-                separatorBuilder: (context, index) => const SizedBox(
-                  height: 30,
+                separatorBuilder: (context, index) => const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Divider(),
                 ),
               ),
             ),

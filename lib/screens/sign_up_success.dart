@@ -10,7 +10,10 @@ class SignupSuccess extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset('assets/logo_big_black.png', fit: BoxFit.fitWidth,),
+            Image.asset(
+              'assets/logo_big_black.png',
+              fit: BoxFit.fitWidth,
+            ),
             const Text(
               'Thank you for Signing up!',
               style: TextStyle(fontWeight: FontWeight.w500),

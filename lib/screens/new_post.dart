@@ -87,6 +87,7 @@ class _NewPostState extends State<NewPost> {
 
     await PostService()
         .addMissingPost(newPost, form.control('isSpotted').value);
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Post created!')));
   }
@@ -102,9 +103,9 @@ class _NewPostState extends State<NewPost> {
   }
 
   void pickImage() async {
-    final _picker = ImagePicker();
+    final picker = ImagePicker();
     try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         var file = File(image.path);
         form.control('picture').updateValue(file);
@@ -134,13 +135,13 @@ class _NewPostState extends State<NewPost> {
                         onTap: pickImage,
                         child: Center(
                           child: CircleAvatar(
-                            child: control.value == null
-                                ? const Icon(Icons.add_a_photo_outlined)
-                                : null,
                             backgroundImage: control.value != null
                                 ? FileImage(control.value as File)
                                 : null,
                             radius: 50,
+                            child: control.value == null
+                                ? const Icon(Icons.add_a_photo_outlined)
+                                : null,
                           ),
                         ),
                       ),
@@ -223,8 +224,8 @@ class _NewPostState extends State<NewPost> {
                       formControlName: 'gender',
                       items: ['Male', 'Female']
                           .map((e) => DropdownMenuItem<String>(
-                                child: Text(e),
                                 value: e,
+                                child: Text(e),
                               ))
                           .toList(),
                     ),

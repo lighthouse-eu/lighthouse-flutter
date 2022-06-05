@@ -12,19 +12,14 @@ final lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      elevation: 0,
-      onPrimary: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 32),
-      minimumSize: const Size(131, 52),
-      textStyle: const TextStyle(
-        color: Colors.white,
-        fontSize: 18,
-        fontWeight: FontWeight.w500
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100)
-      )
-    ),
+        elevation: 0,
+        onPrimary: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        minimumSize: const Size(131, 52),
+        textStyle: const TextStyle(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(100))),
   ),
 );
 

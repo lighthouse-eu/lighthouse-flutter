@@ -10,24 +10,31 @@ class TipsTab extends StatelessWidget {
       children: [
         const Text(
           'Useful help and resources',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+          ),
         ),
         TipCard(
           title: 'How can I help?',
-          textContent: 'Here’s the immediate course of action you should take if you encountered someone who is lost, and 5 steps you should take in order to help them.',
+          textContent:
+              'Here’s the immediate course of action you should take if you encountered someone who is lost, and 5 steps you should take in order to help them.',
           textButton: 'Learn More',
           onPressed: () {},
         ),
         TipCard(
           title: 'Charities around you',
-          textContent: 'Donate to these charities and participate in their activities in order to support the cause for missing people.',
+          textContent:
+              'Donate to these charities and participate in their activities in order to support the cause for missing people.',
           textButton: 'Learn More',
           onPressed: () {},
           color: const Color(0xFFD5F1D3),
         ),
         TipCard(
           title: 'Contact the authorities',
-          textContent: 'If you have just encountered a lost person, contact the authorities right now and report the case so that the police can get involved.',
+          textContent:
+              'If you have just encountered a lost person, contact the authorities right now and report the case so that the police can get involved.',
           textButton: 'Call now',
           onPressed: () {},
           color: const Color(0xFFF1DAD3),

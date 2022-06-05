@@ -86,12 +86,25 @@ class _MissingSpottedMapState extends State<MissingSpottedMap> {
             )
           : Column(
               children: [
+                const Text(
+                  'Missing or Spotted nearby',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26,
+                  ),
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Missing'),
-                    Switch(value: _isSpotted, onChanged: (_) => _toggleType()),
+                    Switch(
+                      value: _isSpotted,
+                      onChanged: (_) => _toggleType(),
+                      inactiveTrackColor: Colors.blue.shade200,
+                      inactiveThumbColor: Colors.blue,
+                    ),
                     const Text('Spotted'),
                   ],
                 ),

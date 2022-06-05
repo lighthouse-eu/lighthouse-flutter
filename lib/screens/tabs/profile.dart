@@ -60,12 +60,12 @@ class ProfileTab extends StatelessWidget {
               FirebaseAuth.instance.signOut();
               Navigator.of(context).pushReplacementNamed('/signin');
             },
+            style: ElevatedButton.styleFrom(
+                primary: Colors.grey.shade200, onPrimary: Colors.red),
             child: const Text(
               'Sign out',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            style: ElevatedButton.styleFrom(
-                primary: Colors.grey.shade200, onPrimary: Colors.red),
           ),
         ),
       ],
