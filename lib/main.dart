@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:lighthouse/screens/new_post.dart';
 import 'package:lighthouse/screens/sign_in.dart';
@@ -83,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 6, vsync: this);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
   }
 
   @override

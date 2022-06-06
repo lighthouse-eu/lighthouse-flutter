@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lighthouse/services/navigation.dart';
 
 class TipsTab extends StatelessWidget {
   const TipsTab({Key? key}) : super(key: key);
@@ -16,13 +17,14 @@ class TipsTab extends StatelessWidget {
             fontSize: 26,
           ),
         ),
-        TipCard(
-          title: 'How can I help?',
-          textContent:
-              'Here’s the immediate course of action you should take if you encountered someone who is lost, and 5 steps you should take in order to help them.',
-          textButton: 'Learn More',
-          onPressed: () {},
-        ),
+        const HeroTipCard(
+            heroTag: 'help',
+            title: 'How can I help?',
+            content:
+                'The immediate course of action you should take if you encountered someone who is lost.',
+            subtitle: 'How can I help?',
+            subContent:
+                'Generate Post on LightHouse App - Post about the found person with their relevant bio-data and the location they were found at through the LightHouse App.\n\nContact Nearby NGOS - You can look for nearby NGOs/charities and contact them to rescue the found person.The organizations would provide temporary shelter to the found person until they are reunited with their family members.\n\nInform Local Authorities - Inform the local authorities/police about the found person. Inform them of the relevant NGO if you have planned on seeking their help to rescue the found person.'),
         TipCard(
           title: 'Charities around you',
           textContent:
@@ -78,7 +80,10 @@ class TipCard extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Text(textContent),
+          Text(
+            textContent,
+            overflow: TextOverflow.clip,
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
@@ -87,6 +92,58 @@ class TipCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class HeroTipCard extends StatelessWidget {
+  final String heroTag;
+  final String title;
+  final String content;
+  final String subtitle;
+  final String subContent;
+  const HeroTipCard(
+      {Key? key,
+      required this.heroTag,
+      required this.title,
+      required this.content,
+      required this.subtitle,
+      required this.subContent})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: heroTag,
+      child: Material(
+        child: TipCard(
+          title: title,
+          textContent: content,
+          textButton: 'Learn More',
+          onPressed: () {
+            Navigation.state.push(MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => Scaffold(
+                appBar: AppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                ),
+                body: Hero(
+                  tag: heroTag,
+                  child: Material(
+                    child: TipCard(
+                      title: subtitle,
+                      textContent: subContent,
+                      textButton: '',
+                      onPressed: () {},
+                    ),
+                  ),
+                ),
+              ),
+            ));
+          },
+        ),
       ),
     );
   }

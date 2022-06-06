@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lighthouse/components/icon_text_container.dart';
 import 'package:lighthouse/keys.dart';
 import 'package:lighthouse/services/post.dart';
 import 'package:place_picker/place_picker.dart';
@@ -319,44 +320,6 @@ class _NewPostState extends State<NewPost> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class IconTextContainer extends StatelessWidget {
-  final String text;
-  final IconData icon;
-  const IconTextContainer({
-    Key? key,
-    required this.text,
-    required this.icon,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 235, 235, 235),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      height: 60,
-      child: Row(
-        //mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Icon(icon),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Text(
-              text,
-              overflow: TextOverflow.clip,
-            ),
-          ),
-        ],
       ),
     );
   }

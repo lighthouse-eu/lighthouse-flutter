@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lighthouse/screens/post_details.dart';
 import 'package:lighthouse/services/post.dart';
+import 'package:lighthouse/theme.dart';
 
 class MissingSpottedMap extends StatefulWidget {
   const MissingSpottedMap({Key? key}) : super(key: key);
@@ -23,26 +24,24 @@ class _MissingSpottedMapState extends State<MissingSpottedMap> {
     setState(() {
       _isLoading = true;
     });
-    var missing = await PostService().getMissingPosts(isSpotted);
+    var posts = await PostService().getMissingPosts(isSpotted);
     var id = 0;
     if (isSpotted) {
       _spottedMarkers = [];
     } else {
       _missingMarkers = [];
     }
-    for (var post in missing) {
+    for (var post in posts) {
       var marker = Marker(
         markerId: MarkerId(id.toString()),
         position: LatLng(post.latitude, post.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
-        infoWindow: InfoWindow(
-          title: post.name,
-          snippet: post.lastSeen.toString(),
-        ),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => PostDetails(post: post),
-          fullscreenDialog: true,
-        )),
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PostDetails(post: post),
+            fullscreenDialog: true,
+          ));
+        },
       );
       if (isSpotted) {
         _spottedMarkers.add(marker);
@@ -110,8 +109,10 @@ class _MissingSpottedMapState extends State<MissingSpottedMap> {
                 ),
                 Expanded(
                   child: GoogleMap(
-                    onMapCreated: (GoogleMapController controller) {
+                    onMapCreated: (GoogleMapController controller) async {
                       _controller.complete(controller);
+                      var c = await _controller.future;
+                      c.setMapStyle(mapTheme);
                     },
                     mapType: MapType.normal,
                     compassEnabled: false,
